@@ -1,0 +1,10 @@
+= Cloud Apps Library
+
+image::https://upload.wikimedia.org/wikipedia/commons/1/19/Under_construction_graphic.gif[,280,align=left]
+
+== Decisiones tomadas
+
+
+== Authors
+https://github.com/cristoflop[@cristoflop]
+https://github.com/juanaviladev[@juanaviladev]
