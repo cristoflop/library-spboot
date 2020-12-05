@@ -2,7 +2,103 @@
 
 image::https://upload.wikimedia.org/wikipedia/commons/1/19/Under_construction_graphic.gif[,280,align=left]
 
-== Decisiones tomadas
+
+== Diseño
+
+[plantuml, , svg]
+----
+@startuml
+class BookRestController
+BookRestController --> BookService
+BookRestController ..> Json
+
+class BookWebController
+BookWebController --> BookService
+BookWebController ..> Html
+
+class BookService
+@enduml
+----
+
+== API REST
+
+|===
+|Caso de uso |Método HTTP |Endpoint |Código HTTP |Responsable
+
+|Obtener un listado con el identificador y el título de cada uno de los libros (pero no el resto de la información)
+|GET
+|/books
+|200
+|Cristo
+
+|Obtener toda la información de un libro determinado (comentarios incluidos)
+|GET
+|/books/{id}
+|200
+|
+
+|Crear un libro
+|POST
+|/books
+|201
+|
+
+|Crear un comentario asociado al libro
+|POST
+|/books/{id}/comments
+|201
+|
+
+|Borrar un comentario
+|DELETE
+|/books/{bookId}/comments/{commentId}
+|204
+|
+
+|===
+
+== Web
+
+|===
+|Caso de uso |Método HTTP |Endpoint |Vista HTML |Responsable
+
+|Página principal con los títulos de los libros (enlaces al detalle)
+|GET
+|/books, /
+|index.html
+|Cristo
+
+|Detalle de un libro, con los comentarios y un formulario para publicar comentario
+|GET
+|/books/{id}
+|book_detail.html
+|Cristo
+
+|Crear un libro
+|GET
+|/books/new
+|new_book.html
+|Cristo
+
+|Crear un libro
+|POST
+|/books
+|redirect:/books, redirect:/, redirect:/books/{id}
+|Cristo
+
+|Crear un comentario asociado al libro
+|POST
+|/books/{id}/comments
+|redirect:/books/{id}
+|Cristo
+
+|Borrar un comentario
+|POST
+|/books/{bookId}/comments/{commentId}/delete
+|redirect:/books/{id}
+|Cristo
+
+|===
 
 
 == Authors
