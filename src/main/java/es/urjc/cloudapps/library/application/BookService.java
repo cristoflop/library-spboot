@@ -3,9 +3,9 @@ package es.urjc.cloudapps.library.application;
 import es.urjc.cloudapps.library.data.BookDto;
 import es.urjc.cloudapps.library.data.InMemoryBookRepository;
 import es.urjc.cloudapps.library.domain.Book;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,8 +18,13 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
 
-    public List<BookDto> findAll() {
-        return this.bookRepository.findAll();
+    public List<BookDto> getAllIndexBooks() {
+        List<Book> books = this.bookRepository.getAll();
+        List<BookDto> indexBooks = new ArrayList<>();
+        books.forEach((book) -> {
+            indexBooks.add(new BookDto(book.getId(), book.getTitle()));
+        });
+        return indexBooks;
     }
 
     public String create(String title, String summary, String author, String editorial) {
