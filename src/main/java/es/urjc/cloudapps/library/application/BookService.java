@@ -1,13 +1,23 @@
 package es.urjc.cloudapps.library.application;
 
+import es.urjc.cloudapps.library.data.BookDto;
 import es.urjc.cloudapps.library.data.InMemoryBookRepository;
 import es.urjc.cloudapps.library.domain.Book;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
+@Service
 public class BookService {
 
-    private InMemoryBookRepository repository;
+    @Autowired
+    private InMemoryBookRepository bookRepository;
+
+    public List<BookDto> findAll() {
+        return this.bookRepository.findAll();
+    }
 
     public String create(String title, String summary, String author, String editorial) {
         Book newBook = new Book(
@@ -18,7 +28,7 @@ public class BookService {
                 editorial
         );
 
-        repository.save(newBook);
+        bookRepository.save(newBook);
 
         return newBook.getId();
     }
