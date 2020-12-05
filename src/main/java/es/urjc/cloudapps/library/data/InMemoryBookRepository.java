@@ -18,22 +18,18 @@ public class InMemoryBookRepository {
         this.books.put(uuid2, new Book(uuid2, "Libro 2", "resumen", "cristofer", "shurs"));
     }
 
-    public List<BookDto> findAll() {
-        List<BookDto> bookDtos = new ArrayList<>();
-        this.books.forEach((uuid, book) -> {
-            bookDtos.add(new BookDto(uuid, book.getTitle()));
-        });
-        return bookDtos;
+    public synchronized List<Book> getAll() {
+        return new ArrayList<>(this.books.values());
+    }
+
+    public synchronized Book get(String id) {
+        return this.books.get(id);
     }
 
     public synchronized void save(Book book) {
         this.checkVersion(book);
 
         books.put(book.getId(), book);
-    }
-
-    public synchronized Book get(String id) {
-        return this.books.get(id);
     }
 
     private void checkVersion(Book book) {
