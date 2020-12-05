@@ -2,8 +2,8 @@
 <html lang="es">
 
 <head>
-    <title>SpBoot - Library</title>
-    <link rel="stylesheet" type="text/css" href="/css/index.css">
+    <title>SpBoot - AddBook</title>
+    <link rel="stylesheet" type="text/css" href="/css/new_book.css">
     <link rel="stylesheet"
           href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
@@ -17,25 +17,21 @@
 
 <header class="mi-header">
     <h1>Tecnicas de Servicios de Internet</h1>
-    <h1>SpringBoot - Library</h1>
 </header>
 
 <main>
-    <div class="mi-table">
-        <table class="table table-bordered table-dark" id="mi-table">
-            <tr>
-                <th>#</th>
-                <th>Titulo</th>
-            </tr>
-            {{#books}}
-            <tr>
-                <td>#</td>
-                <td><a href="/books/{{id}}">{{title}}</a></td>
-            </tr>
-            {{/books}}
-        </table>
-    </div>
-    <a class="btn-danger mi-btn" href="/books/add">Nuevo libro</a>
+    <form class="mi-form">
+        <div class="form-group">
+            <label for="bookTittle" class="bmd-label-floating">Titulo</label>
+            <input type="text" class="form-control" id="bookTittle" name="tittle">
+            <span class="bmd-help">Titulo del libro</span>
+        </div>
+        <div class="form-group">
+            <label for="bookSummary" class="bmd-label-floating">Resumen</label>
+            <input type="text" class="form-control" id="bookSummary" name="summary">
+            <span class="bmd-help">Resumen del libro</span>
+        </div>
+    </form>
 </main>
 
 </body>
