@@ -21,10 +21,8 @@ public class BookController {
 
     @GetMapping("/books")
     public String getAllIndexBooks(Model model) {
-
-        List<BookDto> books = this.bookService.getAllIndexBooks();
+        List<BookDto> books = this.bookService.getAllBooks();
         model.addAttribute("books", books);
-
         return "index";
     }
 
