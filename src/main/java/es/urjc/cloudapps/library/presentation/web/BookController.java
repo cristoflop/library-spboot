@@ -3,7 +3,6 @@ package es.urjc.cloudapps.library.presentation.web;
 
 import es.urjc.cloudapps.library.application.BookService;
 import es.urjc.cloudapps.library.data.BookDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -20,9 +19,9 @@ public class BookController {
     }
 
     @GetMapping("/books")
-    public String getAllBooks(Map<String, Object> model) {
+    public String getAllIndexBooks(Map<String, Object> model) {
 
-        List<BookDto> books = this.bookService.findAll();
+        List<BookDto> books = this.bookService.getAllIndexBooks();
         model.put("books", books);
 
         return "index";
