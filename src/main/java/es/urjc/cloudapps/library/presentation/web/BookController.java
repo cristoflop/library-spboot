@@ -13,8 +13,11 @@ import java.util.Map;
 @Controller
 public class BookController {
 
-    @Autowired
     private BookService bookService;
+
+    public BookController(BookService bookService) {
+        this.bookService = bookService;
+    }
 
     @GetMapping("/books")
     public String getAllBooks(Map<String, Object> model) {

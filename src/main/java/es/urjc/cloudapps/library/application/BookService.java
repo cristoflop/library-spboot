@@ -12,8 +12,11 @@ import java.util.UUID;
 @Service
 public class BookService {
 
-    @Autowired
     private InMemoryBookRepository bookRepository;
+
+    public BookService(InMemoryBookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
 
     public List<BookDto> findAll() {
         return this.bookRepository.findAll();
