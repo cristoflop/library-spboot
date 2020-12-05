@@ -25,7 +25,7 @@ public class Book {
         this.version++;
 
         this.commentsCount++;
-        this.ratingsSum += comment.getRating();
+        this.ratingsSum += comment.getRating().getValue();
         this.rating = this.ratingsSum / commentsCount;
     }
 
@@ -33,7 +33,7 @@ public class Book {
         this.version++;
 
         this.commentsCount--;
-        this.ratingsSum -= comment.getRating();
+        this.ratingsSum -= comment.getRating().getValue();
         this.rating = this.ratingsSum / commentsCount;
     }
 
