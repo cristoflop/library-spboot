@@ -17,11 +17,15 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    @GetMapping("/books")
+    @GetMapping(value = {"/books", "/"})
     public String getAllIndexBooks(Model model) {
         List<BookDto> books = this.bookService.getAllBooks();
         model.addAttribute("books", books);
         return "index";
     }
 
+    @GetMapping("/books/add")
+    public String addNewBook() {
+        return "new_book";
+    }
 }
