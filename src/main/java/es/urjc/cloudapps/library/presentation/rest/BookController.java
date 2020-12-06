@@ -21,7 +21,8 @@ import java.net.URI;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
 @Tag(name = "Books")
-@RestController("/api")
+@RestController
+@RequestMapping("/api")
 public class BookController {
 
     private final BookService bookService;
