@@ -1,33 +1,34 @@
 package es.urjc.cloudapps.library.data;
 
 import es.urjc.cloudapps.library.domain.Book;
+import es.urjc.cloudapps.library.domain.BookId;
+import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
+@Repository
 public class InMemoryBookRepository {
 
-    private Map<String, Book> books;
+    private final Map<BookId, Book> books;
+    private final AtomicLong idGenerator;
 
     public InMemoryBookRepository() {
-        this.books = new HashMap<>();
+        this.books = new ConcurrentHashMap<>();
+        this.idGenerator = new AtomicLong();
     }
 
-    public synchronized void save(Book book) {
-        this.checkVersion(book);
-
-        books.put(book.getId(), book);
+    public void save(Book book) {
+        this.books.put(book.getId(), book);
     }
 
-    public synchronized Book get(String id) {
-        return this.books.get(id);
+    public Book get(BookId id) {
+        return books.get(id);
     }
 
-    private void checkVersion(Book book) {
-        Book oldBook = books.get(book.getId());
-
-        if(book.getVersion() != oldBook.getVersion() + 1)
-            throw new RuntimeException("Version is outdated");
+    public BookId newId() {
+        return new BookId(String.valueOf(idGenerator.incrementAndGet()));
     }
 
 }

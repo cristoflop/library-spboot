@@ -23,18 +23,20 @@ class BookService
 == API REST
 
 |===
-|Caso de uso |Método HTTP |Endpoint |Código HTTP |Responsable
+|Caso de uso |Método HTTP |Endpoint |Código HTTP |Responsable |Notas
 
 |Obtener un listado con el identificador y el título de cada uno de los libros (pero no el resto de la información)
 |GET
 |/books
 |200
 |Cristo
+|
 
 |Obtener toda la información de un libro determinado (comentarios incluidos)
 |GET
 |/books/{id}
 |200
+|
 |
 
 |Crear un libro
@@ -42,11 +44,13 @@ class BookService
 |/books
 |201
 |
+|
 
 |Crear un comentario asociado al libro
 |POST
 |/books/{id}/comments
 |201
+|
 |
 
 |Borrar un comentario
@@ -54,6 +58,11 @@ class BookService
 |/books/{bookId}/comments/{commentId}
 |204
 |
+| 'bookId' no se utiliza al asignar un identificador único a cada comentario.
+
+Aún así, hemos considerado que al no tener sentido
+los comentarios sin un libro asociado, desde el punto de vista de la API, es más claro modelarlo así y no como
+un recurso independiente /comments/{commentId}
 
 |===
 

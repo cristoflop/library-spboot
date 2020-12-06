@@ -1,38 +1,31 @@
-package es.urjc.cloudapps.library.domain;
+package es.urjc.cloudapps.library.application.dtos;
 
-public class Book {
-
-    private final BookId id;
+public class CreateBookDto {
     private final String title;
     private final String summary;
     private final String author;
     private final String editorial;
 
-    public Book(BookId id, String title, String summary, String author, String editorial) {
-        this.id = id;
+    public CreateBookDto(String title, String summary, String author, String editorial) {
         this.title = title;
         this.summary = summary;
         this.author = author;
         this.editorial = editorial;
     }
 
-    public BookId getId() {
-        return this.id;
-    }
-
     public String getTitle() {
-        return this.title;
+        return title;
     }
 
     public String getSummary() {
-        return this.summary;
+        return summary;
     }
 
     public String getAuthor() {
-        return this.author;
+        return author;
     }
 
     public String getEditorial() {
-        return this.editorial;
+        return editorial;
     }
 }

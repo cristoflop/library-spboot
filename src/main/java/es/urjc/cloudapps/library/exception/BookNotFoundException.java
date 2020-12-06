@@ -2,8 +2,8 @@ package es.urjc.cloudapps.library.exception;
 
 public class BookNotFoundException extends RuntimeException {
 
-    public BookNotFoundException(String uuid) {
-        super("The book with id: " + uuid + " doesn't exist");
+    public BookNotFoundException(String id) {
+        super(String.format("The book with id: %s doesn't exist", id));
     }
 
 }

@@ -2,15 +2,13 @@ package es.urjc.cloudapps.library.domain;
 
 public class Comment {
 
-    private String id;
-    private String bookId;
-    private String authorName;
-    private String body;
-    private Rating rating;
+    private final CommentId id;
+    private final BookId bookId;
+    private final String authorName;
+    private final String body;
+    private final Rating rating;
 
-    private int version;
-
-    public Comment(String id, Book book, String authorName, String body, Rating rating) {
+    public Comment(CommentId id, Book book, String authorName, String body, Rating rating) {
         this.id = id;
         this.bookId = book.getId();
         this.authorName = authorName;
@@ -18,11 +16,11 @@ public class Comment {
         this.rating = rating;
     }
 
-    public String getId() {
+    public CommentId getId() {
         return id;
     }
 
-    public String getBookId() {
+    public BookId getBookId() {
         return bookId;
     }
 
@@ -36,9 +34,5 @@ public class Comment {
 
     public Rating getRating() {
         return this.rating;
-    }
-
-    public int getVersion() {
-        return this.version;
     }
 }
