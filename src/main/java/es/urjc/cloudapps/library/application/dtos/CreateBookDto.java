@@ -5,9 +5,9 @@ public class CreateBookDto {
     private final String summary;
     private final String author;
     private final String editorial;
-    private final int publishYear;
+    private final String publishYear;
 
-    public CreateBookDto(String title, String summary, String author, String editorial, int publishYear) {
+    public CreateBookDto(String title, String summary, String author, String editorial, String publishYear) {
         this.title = title;
         this.summary = summary;
         this.author = author;
@@ -31,7 +31,7 @@ public class CreateBookDto {
         return editorial;
     }
 
-    public int getPublishYear() {
+    public String getPublishYear() {
         return this.publishYear;
     }
 }
