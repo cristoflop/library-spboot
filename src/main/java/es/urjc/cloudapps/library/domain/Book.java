@@ -9,13 +9,15 @@ public class Book {
     private final String summary;
     private final String author;
     private final String editorial;
+    private final int publishYear;
 
-    public Book(Id id, String title, String summary, String author, String editorial) {
+    public Book(Id id, String title, String summary, String author, String editorial, int publishYear) {
         this.id = id;
         this.title = title;
         this.summary = summary;
         this.author = author;
         this.editorial = editorial;
+        this.publishYear = publishYear;
     }
 
     public Id getId() {
@@ -36,6 +38,10 @@ public class Book {
 
     public String getEditorial() {
         return this.editorial;
+    }
+
+    public int getPublishYear() {
+        return this.publishYear;
     }
 
     public static class Id {
