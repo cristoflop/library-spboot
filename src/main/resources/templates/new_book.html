@@ -21,7 +21,9 @@
 
 <main>
     {{#errors}}
-    <p>{{field}}</p>
+    <a class="list-group-item text-danger mi-error">
+        Error en el campo "{{field}}"
+    </a>
     {{/errors}}
     <form class="mi-form" method="post" action="/books/add" name="book">
         <div class="form-group">

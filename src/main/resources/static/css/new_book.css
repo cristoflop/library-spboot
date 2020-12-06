@@ -6,6 +6,10 @@
     color: black;
 }
 
+.mi-error {
+    margin-left: 2%;
+}
+
 .mi-form {
     margin: 2%;
 }
