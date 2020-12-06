@@ -14,6 +14,10 @@ public class InMemoryCommentRepository {
         this.comments = Collections.synchronizedMap(new HashMap<>());
     }
 
+    public Comment get(String id) {
+        return null;
+    }
+
     public void save(Comment comment) {
 
         comments.put(comment.getId(), comment);
