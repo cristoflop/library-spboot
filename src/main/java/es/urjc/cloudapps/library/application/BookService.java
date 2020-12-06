@@ -56,7 +56,7 @@ public class BookService {
                 book.getSummary(),
                 book.getAuthor(),
                 book.getEditorial(),
-                book.getPublishYear()
+                Integer.parseInt(book.getPublishYear())
         );
 
         bookRepository.save(newBook);
