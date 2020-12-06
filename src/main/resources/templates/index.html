@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="esp">
+
+<head>
+    <title>SpBoot - Library</title>
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<header class="mi-header">
+    <h1>Tecnicas de Servicios de Internet</h1>
+    <h1>SpringBoot - Library</h1>
+</header>
+
+<main>
+    <div class="mi-table">
+        <table class="table table-bordered table-dark" id="mi-table">
+            <tr>
+                <th>#</th>
+                <th>Titulo</th>
+            </tr>
+            {{#books}}
+            <tr>
+                <td>#</td>
+                <td><a href="/books/{{id}}">{{title}}</a></td>
+            </tr>
+            {{/books}}
+        </table>
+    </div>
+    <a class="btn-danger mi-btn" href="/books/add">Nuevo libro</a>
+</main>
+
+</body>
+
+</html>

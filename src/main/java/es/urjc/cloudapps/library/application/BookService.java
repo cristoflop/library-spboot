@@ -11,12 +11,20 @@ import es.urjc.cloudapps.library.domain.BookId;
 import es.urjc.cloudapps.library.domain.Comment;
 import es.urjc.cloudapps.library.domain.Rating;
 import es.urjc.cloudapps.library.exception.BookNotFoundException;
+import es.urjc.cloudapps.library.domain.BookId;
+import es.urjc.cloudapps.library.domain.Comment;
+import es.urjc.cloudapps.library.domain.Rating;
+import es.urjc.cloudapps.library.exception.BookNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-@Service
 public class BookService {
 
     private final InMemoryBookRepository bookRepository;
@@ -26,6 +34,25 @@ public class BookService {
                        InMemoryCommentRepository commentRepository) {
         this.bookRepository = bookRepository;
         this.commentRepository = commentRepository;
+    }
+
+    public String create(String title, String summary, String author, String editorial) {
+        Book newBook = new Book(
+                bookRepository.newId(),
+                title,
+                summary,
+                author,
+                editorial
+        );
+
+        bookRepository.save(newBook);
+
+        return newBook.getId().toString();
+    }
+
+    public List<BookDto> getAllBooks() {
+        return this.bookRepository.getAll().stream().map(
+                book -> new BookDto(book.getId(), book.getTitle())).collect(Collectors.toList());
     }
 
     public String publishComment(PublishCommentDto comment) {

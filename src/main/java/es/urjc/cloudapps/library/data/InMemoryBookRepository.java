@@ -4,11 +4,12 @@ import es.urjc.cloudapps.library.domain.Book;
 import es.urjc.cloudapps.library.domain.BookId;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-@Repository
 public class InMemoryBookRepository {
 
     private final Map<BookId, Book> books;
@@ -23,12 +24,16 @@ public class InMemoryBookRepository {
         this.books.put(book.getId(), book);
     }
 
-    public Book get(BookId id) {
-        return books.get(id);
-    }
-
     public BookId newId() {
         return new BookId(String.valueOf(idGenerator.incrementAndGet()));
+    }
+
+    public List<Book> getAll() {
+        return new ArrayList<>(this.books.values());
+    }
+
+    public Book get(BookId id) {
+        return this.books.get(id);
     }
 
 }

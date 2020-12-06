@@ -22,6 +22,10 @@ public class InMemoryCommentRepository {
         this.idGenerator = new AtomicLong();
     }
 
+    public Comment get(String id) {
+        return null;
+    }
+
     public void save(Comment comment) {
         comments.put(comment.getId(), comment);
     }
