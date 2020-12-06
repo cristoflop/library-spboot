@@ -2,7 +2,6 @@ package es.urjc.cloudapps.library.data;
 
 import es.urjc.cloudapps.library.domain.Book;
 import es.urjc.cloudapps.library.domain.Comment;
-import es.urjc.cloudapps.library.domain.CommentId;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,7 +13,7 @@ import java.util.stream.Collectors;
 @Repository
 public class InMemoryCommentRepository {
 
-    private final Map<CommentId, Comment> comments;
+    private final Map<Comment.Id, Comment> comments;
     private final AtomicLong idGenerator;
 
     public InMemoryCommentRepository() {
@@ -22,8 +21,8 @@ public class InMemoryCommentRepository {
         this.idGenerator = new AtomicLong();
     }
 
-    public Comment get(String id) {
-        return null;
+    public Comment get(Comment.Id commentId) {
+        return this.comments.get(commentId);
     }
 
     public void save(Comment comment) {
@@ -51,11 +50,7 @@ public class InMemoryCommentRepository {
                 .collect(Collectors.toList());
     }
 
-    public Comment get(String id) {
-        return comments.get(id);
-    }
-
-    public CommentId newId() {
-        return new CommentId(String.valueOf(idGenerator.incrementAndGet()));
+    public Comment.Id newId() {
+        return new Comment.Id(String.valueOf(idGenerator.incrementAndGet()));
     }
 }

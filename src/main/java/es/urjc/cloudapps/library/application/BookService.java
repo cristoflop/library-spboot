@@ -1,30 +1,18 @@
 package es.urjc.cloudapps.library.application;
 
-import es.urjc.cloudapps.library.application.dtos.CommentDto;
-import es.urjc.cloudapps.library.application.dtos.CreateBookDto;
-import es.urjc.cloudapps.library.application.dtos.GetBookWithCommentsDto;
-import es.urjc.cloudapps.library.application.dtos.PublishCommentDto;
+import es.urjc.cloudapps.library.application.dtos.*;
 import es.urjc.cloudapps.library.data.InMemoryBookRepository;
 import es.urjc.cloudapps.library.data.InMemoryCommentRepository;
 import es.urjc.cloudapps.library.domain.Book;
-import es.urjc.cloudapps.library.domain.BookId;
-import es.urjc.cloudapps.library.domain.Comment;
-import es.urjc.cloudapps.library.domain.Rating;
-import es.urjc.cloudapps.library.exception.BookNotFoundException;
-import es.urjc.cloudapps.library.domain.BookId;
 import es.urjc.cloudapps.library.domain.Comment;
 import es.urjc.cloudapps.library.domain.Rating;
 import es.urjc.cloudapps.library.exception.BookNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+@Service
 public class BookService {
 
     private final InMemoryBookRepository bookRepository;
@@ -36,27 +24,13 @@ public class BookService {
         this.commentRepository = commentRepository;
     }
 
-    public String create(String title, String summary, String author, String editorial) {
-        Book newBook = new Book(
-                bookRepository.newId(),
-                title,
-                summary,
-                author,
-                editorial
-        );
-
-        bookRepository.save(newBook);
-
-        return newBook.getId().toString();
-    }
-
     public List<BookDto> getAllBooks() {
         return this.bookRepository.getAll().stream().map(
-                book -> new BookDto(book.getId(), book.getTitle())).collect(Collectors.toList());
+                book -> new BookDto(book.getId().getValue(), book.getTitle())).collect(Collectors.toList());
     }
 
     public String publishComment(PublishCommentDto comment) {
-        BookId id = new BookId(comment.getBookId());
+        Book.Id id = new Book.Id(comment.getBookId());
         Book book = bookRepository.get(id);
 
         if (book == null)
@@ -90,7 +64,7 @@ public class BookService {
     }
 
     public GetBookWithCommentsDto getBookWithComments(String bookId) {
-        BookId id = new BookId(bookId);
+        Book.Id id = new Book.Id(bookId);
         Book book = bookRepository.get(id);
         if (book == null)
             throw new BookNotFoundException(bookId);
@@ -115,7 +89,8 @@ public class BookService {
     }
 
     public void removeComment(String id) {
-        Comment comment = commentRepository.get(id);
+        Comment.Id commentId = new Comment.Id(id);
+        Comment comment = commentRepository.get(commentId);
         commentRepository.remove(comment);
     }
 }

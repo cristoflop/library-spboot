@@ -1,8 +1,7 @@
 package es.urjc.cloudapps.library.presentation.web;
 
-
 import es.urjc.cloudapps.library.application.BookService;
-import es.urjc.cloudapps.library.data.BookDto;
+import es.urjc.cloudapps.library.application.dtos.BookDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +11,7 @@ import java.util.List;
 @Controller
 public class BookController {
 
-    private BookService bookService;
+    private final BookService bookService;
 
     public BookController(BookService bookService) {
         this.bookService = bookService;
