@@ -2,10 +2,14 @@ package es.urjc.cloudapps.library.presentation.web;
 
 import es.urjc.cloudapps.library.application.BookService;
 import es.urjc.cloudapps.library.application.dtos.BookDto;
+import es.urjc.cloudapps.library.application.dtos.CreateBookDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -25,7 +29,38 @@ public class BookController {
     }
 
     @GetMapping("/books/add")
-    public String addNewBook() {
+    public String addNewBook(Model model) {
         return "new_book";
     }
+
+    @PostMapping("/books/add")
+    public String addNewBook(@ModelAttribute("book") CreateBookDto book, Model model) {
+        List<Field> fieldsWithError = new ArrayList<>();
+        if (book.getTitle().equals(""))
+            fieldsWithError.add(new Field("Titulo"));
+        try {
+            book.getPublishYear();
+        } catch (Exception e) {
+            fieldsWithError.add(new Field("Año de publicacion"));
+        }
+        if (fieldsWithError.size() > 0) {
+            model.addAttribute("errors", fieldsWithError);
+            return "new_book";
+        }
+        String id = this.bookService.create(book);
+        return "redirect:/books";
+    }
+
+    public class Field {
+        private String field;
+
+        public Field(String field) {
+            this.field = field;
+        }
+
+        public String getField() {
+            return this.field;
+        }
+    }
+
 }
