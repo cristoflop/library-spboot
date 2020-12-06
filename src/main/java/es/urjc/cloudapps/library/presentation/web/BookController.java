@@ -39,7 +39,8 @@ public class BookController {
         if (book.getTitle().equals(""))
             fieldsWithError.add(new Field("Titulo"));
         try {
-            book.getPublishYear();
+            int year = Integer.parseInt(book.getPublishYear());
+            if (year < 0) throw new Exception();
         } catch (Exception e) {
             fieldsWithError.add(new Field("Año de publicacion"));
         }
@@ -47,10 +48,11 @@ public class BookController {
             model.addAttribute("errors", fieldsWithError);
             return "new_book";
         }
-        String id = this.bookService.create(book);
+        this.bookService.create(book);
         return "redirect:/books";
     }
 
+    // clase para recorrer la lista de errores con mustache
     public class Field {
         private String field;
 
