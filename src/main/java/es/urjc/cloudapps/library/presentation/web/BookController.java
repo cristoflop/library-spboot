@@ -3,11 +3,10 @@ package es.urjc.cloudapps.library.presentation.web;
 import es.urjc.cloudapps.library.application.BookService;
 import es.urjc.cloudapps.library.application.dtos.BookDto;
 import es.urjc.cloudapps.library.application.dtos.CreateBookDto;
+import es.urjc.cloudapps.library.application.dtos.GetBookWithCommentsDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +27,15 @@ public class BookController {
         return "index";
     }
 
+    @GetMapping("/books/{id}")
+    public String getBook(@PathVariable("id") String id, Model model) {
+        GetBookWithCommentsDto book = this.bookService.getBookWithComments(id);
+        model.addAttribute("book", book);
+        return "book_detail";
+    }
+
     @GetMapping("/books/add")
-    public String addNewBook(Model model) {
+    public String addNewBook() {
         return "new_book";
     }
 

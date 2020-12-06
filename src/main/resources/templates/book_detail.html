@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SpBoot - {{book.title}}</title>
+    <link rel="stylesheet" type="text/css" href="/css/book_detail.css">
+    <link rel="stylesheet"
+          href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js"></script>
+    <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js"></script>
+    <script>$(document).ready(function () {
+        $('body').bootstrapMaterialDesign();
+    });</script>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light mi-nav">
+    <a href="/">
+        <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-arrow-left" fill="currentColor"
+             xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd"
+                  d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+        </svg>
+    </a>
+    <a class="btn btn btn-primary btn-lg mi-link" href="/books/{{book.id}}">{{book.title}}</a>
+</nav>
+<section>
+    <div class="card mi-card">
+        <div class="card-body">
+            <span>{{book.summary}}</span>
+        </div>
+    </div>
+    <div class="card mi-card">
+        <div class="card-body">
+            <span>Autor: {{book.author}}, Editorial: {{book.editorial}}, Año de publicacion: {{book.publishYear}}</span>
+        </div>
+    </div>
+</section>
+<hr>
+<section class="mi-section">
+    <h2>Comentarios</h2>
+    {{#book.comments}}
+    <div class="card mi-card">
+        <div class="card-body">
+            <span>{{book.summary}}</span>
+        </div>
+    </div>
+    {{/book.comments}}
+</section>
+</body>
+</html>
