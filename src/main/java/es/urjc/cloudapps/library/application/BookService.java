@@ -69,6 +69,12 @@ public class BookService {
         if (book == null)
             throw new BookNotFoundException(bookId);
 
+        // Este enfoque no sirve cuando el nivel de aislamiento
+        // es inferior a REPEATABLE_READ, puesto que durante el tiempo
+        // que pasa entre findAllOf() y getRatingAverageOf(), la primera
+        // podría obtener una lista y la segunda calcular el rating
+        // sobre una lista diferente.
+        // TODO
         List<Comment> comments = commentRepository.findAllOf(book);
         double bookRating = commentRepository.getRatingAverageOf(book);
 
