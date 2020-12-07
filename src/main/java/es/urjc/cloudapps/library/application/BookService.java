@@ -55,7 +55,8 @@ public class BookService {
                 book.getTitle(),
                 book.getSummary(),
                 book.getAuthor(),
-                book.getEditorial()
+                book.getEditorial(),
+                Integer.parseInt(book.getPublishYear())
         );
 
         bookRepository.save(newBook);
@@ -89,6 +90,7 @@ public class BookService {
                 book.getSummary(),
                 book.getAuthor(),
                 book.getEditorial(),
+                book.getPublishYear(),
                 bookRating,
                 mappedComments
         );

@@ -5,12 +5,14 @@ public class CreateBookDto {
     private final String summary;
     private final String author;
     private final String editorial;
+    private final String publishYear;
 
-    public CreateBookDto(String title, String summary, String author, String editorial) {
+    public CreateBookDto(String title, String summary, String author, String editorial, String publishYear) {
         this.title = title;
         this.summary = summary;
         this.author = author;
         this.editorial = editorial;
+        this.publishYear = publishYear;
     }
 
     public String getTitle() {
@@ -27,5 +29,9 @@ public class CreateBookDto {
 
     public String getEditorial() {
         return editorial;
+    }
+
+    public String getPublishYear() {
+        return this.publishYear;
     }
 }

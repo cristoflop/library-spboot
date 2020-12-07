@@ -1,4 +1,4 @@
-package es.urjc.cloudapps.library.presentation.rest;
+package es.urjc.cloudapps.library.presentation;
 
 import es.urjc.cloudapps.library.application.BookService;
 import es.urjc.cloudapps.library.application.dtos.CreateBookDto;
@@ -23,11 +23,11 @@ import static org.springframework.web.servlet.support.ServletUriComponentsBuilde
 @Tag(name = "Books")
 @RestController
 @RequestMapping("/api")
-public class BookController {
+public class RestBookController {
 
     private final BookService bookService;
 
-    public BookController(BookService bookService) {
+    public RestBookController(BookService bookService) {
         this.bookService = bookService;
     }
 
