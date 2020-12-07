@@ -121,7 +121,5 @@ public class BookService {
             throw new FieldFormatException("Autor");
         if (comment.getBody().isEmpty())
             throw new FieldFormatException("Mensaje");
-        if (comment.getRating() < 0 || comment.getRating() > 5)
-            throw new FieldFormatException("Puntuacion");
     }
 }

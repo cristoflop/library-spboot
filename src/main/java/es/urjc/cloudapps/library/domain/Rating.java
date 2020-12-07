@@ -1,11 +1,14 @@
 package es.urjc.cloudapps.library.domain;
 
+import es.urjc.cloudapps.library.exception.FieldFormatException;
+
 public class Rating {
 
     private final int value;
 
     public Rating(int value) {
-        assert value >= 0 && value <= 5;
+        if (value < 0 || value > 5)
+            throw new FieldFormatException("Puntuacion");
         this.value = value;
     }
 
