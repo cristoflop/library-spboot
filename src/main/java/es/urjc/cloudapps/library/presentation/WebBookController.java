@@ -15,9 +15,11 @@ import java.util.List;
 @Controller
 public class WebBookController {
 
+    private final WebUser webUser;
     private final BookService bookService;
 
-    public WebBookController(BookService bookService) {
+    public WebBookController(BookService bookService, WebUser webUser) {
+        this.webUser = webUser;
         this.bookService = bookService;
     }
 
@@ -32,6 +34,8 @@ public class WebBookController {
     public String getBook(@PathVariable("id") String id, Model model) {
         GetBookWithCommentsDto book = this.bookService.getBookWithComments(id);
         model.addAttribute("book", book);
+        if (!this.webUser.isAnonymous())
+            model.addAttribute("author", this.webUser.getUserName());
         return "book_detail";
     }
 
@@ -57,6 +61,7 @@ public class WebBookController {
                                  RedirectAttributes flashAttributes) {
         try {
             this.bookService.publishComment(comment);
+            this.webUser.setUserName(comment.getAuthorName());
         } catch (RuntimeException e) {
             flashAttributes.addFlashAttribute("error", new Field(e.getMessage()));
         }
