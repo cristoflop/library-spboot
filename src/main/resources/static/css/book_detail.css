@@ -17,5 +17,24 @@ hr {
 }
 
 .mi-section {
-    margin: 2%;
+    margin-top: 2%;
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-bottom: 4%;
+}
+
+.comment-card{
+    margin-top: 2%;
+    margin-bottom: 0.6%;
+}
+
+.comment-card-inner{
+    display: flex;
+    flex-direction: column;
+}
+
+.no-comments{
+    color: #546e7a;
+    margin-top: 2%;
+    margin-bottom: 2%;
 }

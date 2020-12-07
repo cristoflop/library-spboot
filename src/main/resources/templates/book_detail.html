@@ -11,7 +11,8 @@
     <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js"></script>
     <script>$(document).ready(function () {
         $('body').bootstrapMaterialDesign();
-    });</script>
+    });
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light mi-nav">
@@ -27,12 +28,17 @@
 <section>
     <div class="card mi-card">
         <div class="card-body">
+            <h2>Resumen</h2>
             <span>{{book.summary}}</span>
         </div>
     </div>
     <div class="card mi-card">
         <div class="card-body">
-            <span>Autor: {{book.author}}, Editorial: {{book.editorial}}, Año de publicacion: {{book.publishYear}}</span>
+            <span>
+                <strong>Autor:</strong> {{book.author}},
+                <strong>Editorial:</strong> {{book.editorial}},
+                <strong>Año de publicacion:</strong> {{book.publishYear}}
+            </span>
         </div>
     </div>
 </section>
@@ -40,12 +46,44 @@
 <section class="mi-section">
     <h2>Comentarios</h2>
     {{#book.comments}}
-    <div class="card mi-card">
-        <div class="card-body">
-            <span>{{book.summary}}</span>
+    <div class="card comment-card">
+        <div class="card-body comment-card-inner">
+            <div>
+                <h4>{{authorName}}</h4>
+                <span><strong>Puntuacion:</strong> {{rating}}</span>
+            </div>
+            <span>{{body}}</span>
         </div>
     </div>
+    <form method="post" action="/books/{{book.id}}/comments/{{id}}">
+        <button type="submit" class="btn btn-danger btn-raised">Eliminar</button>
+    </form>
     {{/book.comments}}
+    {{^book.comments}}
+    <p class="no-comments">No hay comentarios aun.</p>
+    {{/book.comments}}
+    <h2>Deja tu comentario</h2>
+    {{#error}}
+    <a class="list-group-item text-danger">
+        Error en un campo: "{{field}}"
+    </a>
+    {{/error}}
+    <form method="post" action="/books/{{book.id}}/comments" name="comment">
+        <div class="form-group">
+            <label for="author" class="bmd-label-floating text-primary">Autor</label>
+            <input type="text" class="form-control" id="author" name="authorName" required>
+        </div>
+        <div class="form-group">
+            <label for="body" class="bmd-label-floating text-primary">Comentario</label>
+            <textarea class="form-control" id="body" rows="4" name="body" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="rating" class="bmd-label-floating text-primary">Puntua el libro del 0 al 5</label>
+            <input type="number" max="5" min="0" class="form-control" id="rating" name="rating" required>
+        </div>
+        <input type="hidden" name="bookId" value="{{book.id}}">
+        <button type="submit" class="btn btn-danger btn-raised">Publicar comentario</button>
+    </form>
 </section>
 </body>
 </html>

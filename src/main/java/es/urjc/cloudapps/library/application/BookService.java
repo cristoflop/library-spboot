@@ -31,6 +31,7 @@ public class BookService {
     }
 
     public String publishComment(PublishCommentDto comment) {
+        this.checkPublishCommentDto(comment);
         Book.Id id = new Book.Id(comment.getBookId());
         Book book = bookRepository.get(id);
 
@@ -105,7 +106,7 @@ public class BookService {
     }
 
     private void checkCreateBookDto(CreateBookDto book) {
-        if (book.getTitle().isEmpty())
+        if (book.getTitle() == null || book.getTitle().isEmpty())
             throw new FieldFormatException("Titulo");
         try {
             int year = Integer.parseInt(book.getPublishYear());
@@ -113,5 +114,12 @@ public class BookService {
         } catch (Exception e) {
             throw new FieldFormatException("Año de publicacion con formato incorrecto");
         }
+    }
+
+    private void checkPublishCommentDto(PublishCommentDto comment) {
+        if (comment.getAuthorName() == null || comment.getAuthorName().isEmpty())
+            throw new FieldFormatException("Autor");
+        if (comment.getBody() == null || comment.getBody().isEmpty())
+            throw new FieldFormatException("Mensaje");
     }
 }
