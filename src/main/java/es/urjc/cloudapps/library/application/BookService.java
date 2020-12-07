@@ -106,7 +106,7 @@ public class BookService {
     }
 
     private void checkCreateBookDto(CreateBookDto book) {
-        if (book.getTitle().isEmpty())
+        if (book.getTitle() == null || book.getTitle().isEmpty())
             throw new FieldFormatException("Titulo");
         try {
             int year = Integer.parseInt(book.getPublishYear());
@@ -117,9 +117,9 @@ public class BookService {
     }
 
     private void checkPublishCommentDto(PublishCommentDto comment) {
-        if (comment.getAuthorName().isEmpty())
+        if (comment.getAuthorName() == null || comment.getAuthorName().isEmpty())
             throw new FieldFormatException("Autor");
-        if (comment.getBody().isEmpty())
+        if (comment.getBody() == null || comment.getBody().isEmpty())
             throw new FieldFormatException("Mensaje");
     }
 }
