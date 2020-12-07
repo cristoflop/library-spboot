@@ -12,7 +12,6 @@
     <script>$(document).ready(function () {
         $('body').bootstrapMaterialDesign();
     });
-
     </script>
 </head>
 <body>
@@ -56,6 +55,9 @@
             <span>{{body}}</span>
         </div>
     </div>
+    <form method="post" action="/books/{{book.id}}/comments/{{id}}">
+        <button type="submit" class="btn btn-danger btn-raised">Eliminar</button>
+    </form>
     {{/book.comments}}
     {{^book.comments}}
     <p class="no-comments">No hay comentarios aun.</p>

@@ -7,10 +7,7 @@ import es.urjc.cloudapps.library.application.dtos.GetBookWithCommentsDto;
 import es.urjc.cloudapps.library.application.dtos.PublishCommentDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +64,12 @@ public class WebBookController {
             model.addAttribute("book", book);
             return "book_detail";
         }
+    }
+
+    @PostMapping("/books/{bookId}/comments/{commentId}")
+    public String deleteComment(@PathVariable String bookId, @PathVariable String commentId) {
+        this.bookService.removeComment(commentId);
+        return "redirect:/books/" + bookId;
     }
 
     // clase para recorrer la lista de errores con mustache
