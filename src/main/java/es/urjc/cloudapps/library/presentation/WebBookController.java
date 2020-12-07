@@ -4,6 +4,7 @@ import es.urjc.cloudapps.library.application.BookService;
 import es.urjc.cloudapps.library.application.dtos.BookDto;
 import es.urjc.cloudapps.library.application.dtos.CreateBookDto;
 import es.urjc.cloudapps.library.application.dtos.GetBookWithCommentsDto;
+import es.urjc.cloudapps.library.application.dtos.PublishCommentDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,6 +51,21 @@ public class WebBookController {
         } catch (RuntimeException e) {
             model.addAttribute("error", new Field(e.getMessage()));
             return "new_book";
+        }
+    }
+
+    @PostMapping("/books/{id}/comments")
+    public String publishComment(@ModelAttribute PublishCommentDto comment,
+                                 @PathVariable String id,
+                                 Model model) {
+        try {
+            this.bookService.publishComment(comment);
+            return "redirect:/books/" + id;
+        } catch (RuntimeException e) {
+            model.addAttribute("error", new Field(e.getMessage()));
+            GetBookWithCommentsDto book = this.bookService.getBookWithComments(comment.getBookId());
+            model.addAttribute("book", book);
+            return "book_detail";
         }
     }
 
