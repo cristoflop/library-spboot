@@ -1,22 +1,23 @@
-package es.urjc.cloudapps.library.presentation.web;
+package es.urjc.cloudapps.library.presentation;
 
 import es.urjc.cloudapps.library.application.BookService;
 import es.urjc.cloudapps.library.application.dtos.BookDto;
 import es.urjc.cloudapps.library.application.dtos.CreateBookDto;
-import es.urjc.cloudapps.library.application.dtos.GetBookWithCommentsDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-public class BookController {
+public class WebBookController {
 
     private final BookService bookService;
 
-    public BookController(BookService bookService) {
+    public WebBookController(BookService bookService) {
         this.bookService = bookService;
     }
 
@@ -60,7 +61,7 @@ public class BookController {
 
     // clase para recorrer la lista de errores con mustache
     public static class Field {
-        private String field;
+        private final String field;
 
         public Field(String field) {
             this.field = field;
