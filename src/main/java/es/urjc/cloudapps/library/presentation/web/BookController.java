@@ -42,7 +42,7 @@ public class BookController {
     @PostMapping("/books/add")
     public String addNewBook(@ModelAttribute("book") CreateBookDto book, Model model) {
         List<Field> fieldsWithError = new ArrayList<>();
-        if (book.getTitle().equals(""))
+        if (book.getTitle().isEmpty())
             fieldsWithError.add(new Field("Titulo"));
         try {
             int year = Integer.parseInt(book.getPublishYear());
@@ -59,7 +59,7 @@ public class BookController {
     }
 
     // clase para recorrer la lista de errores con mustache
-    public class Field {
+    public static class Field {
         private String field;
 
         public Field(String field) {
