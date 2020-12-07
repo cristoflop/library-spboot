@@ -11,7 +11,8 @@
     <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js"></script>
     <script>$(document).ready(function () {
         $('body').bootstrapMaterialDesign();
-    });</script>
+    });
+    </script>
 </head>
 <body>
 
@@ -20,11 +21,11 @@
 </header>
 
 <main>
-    {{#errors}}
+    {{#error}}
     <a class="list-group-item text-danger mi-error">
-        Error en el campo "{{field}}"
+        Error en un campo: "{{field}}"
     </a>
-    {{/errors}}
+    {{/error}}
     <form class="mi-form" method="post" action="/books/add" name="book">
         <div class="form-group">
             <label for="bookTitle" class="bmd-label-floating text-primary">Titulo</label>
