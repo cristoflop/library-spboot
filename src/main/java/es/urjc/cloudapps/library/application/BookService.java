@@ -7,6 +7,7 @@ import es.urjc.cloudapps.library.domain.Book;
 import es.urjc.cloudapps.library.domain.Comment;
 import es.urjc.cloudapps.library.domain.Rating;
 import es.urjc.cloudapps.library.exception.BookNotFoundException;
+import es.urjc.cloudapps.library.exception.FieldFormatException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,6 +51,7 @@ public class BookService {
     }
 
     public String create(CreateBookDto book) {
+        this.checkCreateBookDto(book);
         Book newBook = new Book(
                 bookRepository.newId(),
                 book.getTitle(),
@@ -100,5 +102,16 @@ public class BookService {
         Comment.Id commentId = new Comment.Id(id);
         Comment comment = commentRepository.get(commentId);
         commentRepository.remove(comment);
+    }
+
+    private void checkCreateBookDto(CreateBookDto book) {
+        if (book.getTitle().isEmpty())
+            throw new FieldFormatException("Titulo");
+        try {
+            int year = Integer.parseInt(book.getPublishYear());
+            if (year < 0) throw new FieldFormatException("Año de publicacion invalido");
+        } catch (Exception e) {
+            throw new FieldFormatException("Año de publicacion con formato incorrecto");
+        }
     }
 }

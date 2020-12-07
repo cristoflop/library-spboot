@@ -3,10 +3,12 @@ package es.urjc.cloudapps.library.presentation;
 import es.urjc.cloudapps.library.application.BookService;
 import es.urjc.cloudapps.library.application.dtos.BookDto;
 import es.urjc.cloudapps.library.application.dtos.CreateBookDto;
+import es.urjc.cloudapps.library.application.dtos.GetBookWithCommentsDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.ArrayList;
@@ -42,21 +44,13 @@ public class WebBookController {
 
     @PostMapping("/books/add")
     public String addNewBook(@ModelAttribute("book") CreateBookDto book, Model model) {
-        List<Field> fieldsWithError = new ArrayList<>();
-        if (book.getTitle().isEmpty())
-            fieldsWithError.add(new Field("Titulo"));
         try {
-            int year = Integer.parseInt(book.getPublishYear());
-            if (year < 0) throw new Exception();
-        } catch (Exception e) {
-            fieldsWithError.add(new Field("Año de publicacion"));
-        }
-        if (fieldsWithError.size() > 0) {
-            model.addAttribute("errors", fieldsWithError);
+            this.bookService.create(book);
+            return "redirect:/books";
+        } catch (RuntimeException e) {
+            model.addAttribute("error", new Field(e.getMessage()));
             return "new_book";
         }
-        this.bookService.create(book);
-        return "redirect:/books";
     }
 
     // clase para recorrer la lista de errores con mustache
@@ -71,5 +65,6 @@ public class WebBookController {
             return this.field;
         }
     }
+
 
 }
