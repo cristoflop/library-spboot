@@ -1,6 +1,7 @@
 package es.urjc.cloudapps.library.presentation;
 
 import es.urjc.cloudapps.library.application.BookService;
+import es.urjc.cloudapps.library.application.dtos.BookDto;
 import es.urjc.cloudapps.library.application.dtos.CreateBookDto;
 import es.urjc.cloudapps.library.application.dtos.GetBookWithCommentsDto;
 import es.urjc.cloudapps.library.application.dtos.PublishCommentDto;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
@@ -29,6 +31,17 @@ public class RestBookController {
 
     public RestBookController(BookService bookService) {
         this.bookService = bookService;
+    }
+
+    @GetMapping("/books")
+    @Operation(summary = "Get all the books with their id and title from repository")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Return all the books",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = BookDto.class))})})
+    public ResponseEntity<List<BookDto>> getBooks() {
+        return ResponseEntity.ok(
+                this.bookService.getAllBooks());
     }
 
     @GetMapping("/books/{id}")
