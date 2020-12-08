@@ -34,7 +34,7 @@ public class RestBookController {
     }
 
     @GetMapping("/books")
-    @Operation(summary = "Get all the books with their id and title from repository")
+    @Operation(summary = "Get all the books with their id and title")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Return all the books",
                     content = {@Content(mediaType = "application/json",
