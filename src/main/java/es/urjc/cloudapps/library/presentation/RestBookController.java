@@ -51,7 +51,8 @@ public class RestBookController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the book",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = GetBookWithCommentsDto.class))}),})
+                            schema = @Schema(implementation = GetBookWithCommentsDto.class))}),
+            @ApiResponse(responseCode = "404", content = {@Content()}, description = "Book not found")})
     public ResponseEntity<GetBookWithCommentsDto> getBook(@PathVariable String id) {
         return ResponseEntity
                 .ok(this.bookService.getBookWithComments(id));
@@ -62,7 +63,8 @@ public class RestBookController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "The book has been created", headers = {
                     @Header(name = "Location", description = "URL where the new resource is located")
-            }),})
+            }),
+            @ApiResponse(responseCode = "400", description = "Fields input validation error")})
     public ResponseEntity<Void> createBook(@Valid @RequestBody CreateBookDto newBook) {
         String bookId = this.bookService.createBook(newBook);
 
@@ -79,7 +81,12 @@ public class RestBookController {
     @PostMapping("/books/{bookId}/comments")
     @Operation(summary = "Publish a new comment about an specific book")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "The comment has been created"),})
+            @ApiResponse(responseCode = "201", description = "The comment has been created", headers = {
+                    @Header(name = "Location", description = "URL where the new resource is located")
+            }),
+            @ApiResponse(responseCode = "400", description = "Fields input validation error"),
+            @ApiResponse(responseCode = "404", description = "Book not found")
+    })
     public ResponseEntity<Void> publishComment(@RequestBody PublishCommentDto commentDto, @PathVariable String bookId) {
         commentDto.setBookId(bookId);
         this.bookService.publishComment(commentDto);
@@ -98,7 +105,8 @@ public class RestBookController {
     @DeleteMapping("/books/{bookId}/comments/{commentId}")
     @Operation(summary = "Delete a published comment")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "The comment has been deleted"),})
+            @ApiResponse(responseCode = "204", description = "The comment has been deleted"),
+            @ApiResponse(responseCode = "404", description = "Comment not found")})
     public ResponseEntity<Void> deleteComment(@PathVariable String commentId, @PathVariable String bookId) {
         this.bookService.removeComment(commentId);
         return ResponseEntity
