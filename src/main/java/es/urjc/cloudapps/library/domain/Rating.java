@@ -8,7 +8,7 @@ public class Rating {
 
     public Rating(int value) {
         if (value < 0 || value > 5)
-            throw new FieldFormatException("Puntuacion");
+            throw new FieldFormatException("La puntuación debe estar entre 0 y 5");
         this.value = value;
     }
 

@@ -42,7 +42,7 @@ public class Comment {
         private final String value;
 
         public Id(String value) {
-            Integer.parseInt(value);
+            Long.parseLong(value);
             this.value = value;
         }
 

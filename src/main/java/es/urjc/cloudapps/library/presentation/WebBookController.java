@@ -5,6 +5,9 @@ import es.urjc.cloudapps.library.application.dtos.BookDto;
 import es.urjc.cloudapps.library.application.dtos.CreateBookDto;
 import es.urjc.cloudapps.library.application.dtos.GetBookWithCommentsDto;
 import es.urjc.cloudapps.library.application.dtos.PublishCommentDto;
+import es.urjc.cloudapps.library.exception.BookNotFoundException;
+import es.urjc.cloudapps.library.exception.CommentNotFoundException;
+import es.urjc.cloudapps.library.exception.FieldFormatException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -47,10 +50,10 @@ public class WebBookController {
     @PostMapping("/books/add")
     public String addNewBook(@ModelAttribute("book") CreateBookDto book, Model model) {
         try {
-            this.bookService.create(book);
+            this.bookService.createBook(book);
             return "redirect:/books";
-        } catch (RuntimeException e) {
-            model.addAttribute("error", new Field(e.getMessage()));
+        } catch (FieldFormatException e) {
+            model.addAttribute("error", new FieldError(e.getMessage()));
             return "new_book";
         }
     }
@@ -62,8 +65,8 @@ public class WebBookController {
         try {
             this.bookService.publishComment(comment);
             this.webUser.setUserName(comment.getAuthorName());
-        } catch (RuntimeException e) {
-            flashAttributes.addFlashAttribute("error", new Field(e.getMessage()));
+        } catch (FieldFormatException e) {
+            flashAttributes.addFlashAttribute("error", new FieldError(e.getMessage()));
         }
         return "redirect:/books/" + id;
     }
@@ -74,11 +77,16 @@ public class WebBookController {
         return "redirect:/books/" + bookId;
     }
 
+    @ExceptionHandler(value = {BookNotFoundException.class, CommentNotFoundException.class})
+    public String resourceNotFoundException() {
+        return "redirect:/books/";
+    }
+
     // clase para recorrer la lista de errores con mustache
-    public static class Field {
+    public static class FieldError {
         private final String field;
 
-        public Field(String field) {
+        public FieldError(String field) {
             this.field = field;
         }
 

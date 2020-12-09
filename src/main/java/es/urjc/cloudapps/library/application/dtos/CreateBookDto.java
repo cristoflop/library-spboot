@@ -1,6 +1,7 @@
 package es.urjc.cloudapps.library.application.dtos;
 
 public class CreateBookDto {
+
     private final String title;
     private final String summary;
     private final String author;

@@ -3,14 +3,15 @@ package es.urjc.cloudapps.library.application.dtos;
 import java.util.List;
 
 public class GetBookWithCommentsDto {
+
     private final String id;
     private final String title;
     private final String summary;
     private final String author;
     private final String editorial;
-    private int publishYear;
-    private final double rating;
+    private final int publishYear;
     private final List<CommentDto> comments;
+    private final double rating;
 
     public GetBookWithCommentsDto(String id,
                                   String title,
@@ -18,8 +19,7 @@ public class GetBookWithCommentsDto {
                                   String author,
                                   String editorial,
                                   int publishYear,
-                                  double rating,
-                                  List<CommentDto> comments) {
+                                  double rating, List<CommentDto> comments) {
         this.id = id;
         this.title = title;
         this.summary = summary;

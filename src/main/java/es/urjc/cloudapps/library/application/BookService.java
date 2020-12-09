@@ -7,6 +7,7 @@ import es.urjc.cloudapps.library.domain.Book;
 import es.urjc.cloudapps.library.domain.Comment;
 import es.urjc.cloudapps.library.domain.Rating;
 import es.urjc.cloudapps.library.exception.BookNotFoundException;
+import es.urjc.cloudapps.library.exception.CommentNotFoundException;
 import es.urjc.cloudapps.library.exception.FieldFormatException;
 import org.springframework.stereotype.Service;
 
@@ -51,7 +52,7 @@ public class BookService {
         return newComment.getId().toString();
     }
 
-    public String create(CreateBookDto book) {
+    public String createBook(CreateBookDto book) {
         this.checkCreateBookDto(book);
         Book newBook = new Book(
                 bookRepository.newId(),
@@ -78,7 +79,6 @@ public class BookService {
         // que pasa entre findAllOf() y getRatingAverageOf(), la primera
         // podría obtener una lista y la segunda calcular el rating
         // sobre una lista diferente.
-        // TODO
         List<Comment> comments = commentRepository.findAllOf(book);
         double bookRating = commentRepository.getRatingAverageOf(book);
 
@@ -102,12 +102,16 @@ public class BookService {
     public void removeComment(String id) {
         Comment.Id commentId = new Comment.Id(id);
         Comment comment = commentRepository.get(commentId);
+        if (comment == null)
+            throw new CommentNotFoundException(commentId.toString());
+
         commentRepository.remove(comment);
     }
 
     private void checkCreateBookDto(CreateBookDto book) {
-        if (book.getTitle() == null || book.getTitle().isEmpty())
-            throw new FieldFormatException("Titulo");
+        if (book.getTitle() == null || book.getTitle().trim().isEmpty())
+            throw new FieldFormatException("El título no debe estar vacío");
+
         try {
             int year = Integer.parseInt(book.getPublishYear());
             if (year < 0) throw new FieldFormatException("Año de publicacion invalido");
@@ -117,9 +121,9 @@ public class BookService {
     }
 
     private void checkPublishCommentDto(PublishCommentDto comment) {
-        if (comment.getAuthorName() == null || comment.getAuthorName().isEmpty())
-            throw new FieldFormatException("Autor");
-        if (comment.getBody() == null || comment.getBody().isEmpty())
-            throw new FieldFormatException("Mensaje");
+        if (comment.getAuthorName() == null || comment.getAuthorName().trim().isEmpty())
+            throw new FieldFormatException("El autor no debe estar vacío");
+        if (comment.getBody() == null || comment.getBody().trim().isEmpty())
+            throw new FieldFormatException("El comentario no debe estar vacío");
     }
 }

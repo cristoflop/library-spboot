@@ -5,6 +5,9 @@ import es.urjc.cloudapps.library.application.dtos.BookDto;
 import es.urjc.cloudapps.library.application.dtos.CreateBookDto;
 import es.urjc.cloudapps.library.application.dtos.GetBookWithCommentsDto;
 import es.urjc.cloudapps.library.application.dtos.PublishCommentDto;
+import es.urjc.cloudapps.library.exception.BookNotFoundException;
+import es.urjc.cloudapps.library.exception.CommentNotFoundException;
+import es.urjc.cloudapps.library.exception.FieldFormatException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -12,7 +15,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -62,7 +64,7 @@ public class RestBookController {
                     @Header(name = "Location", description = "URL where the new resource is located")
             }),})
     public ResponseEntity<Void> createBook(@Valid @RequestBody CreateBookDto newBook) {
-        String bookId = this.bookService.create(newBook);
+        String bookId = this.bookService.createBook(newBook);
 
         URI newBookLocation = fromCurrentRequest()
                 .path("/{bookId}")
@@ -83,7 +85,7 @@ public class RestBookController {
         this.bookService.publishComment(commentDto);
 
         URI newCommentLocation = fromCurrentRequest()
-                .replacePath("/books")
+                .replacePath("/api/books")
                 .path("/{bookId}")
                 .buildAndExpand(bookId)
                 .toUri();
@@ -100,8 +102,39 @@ public class RestBookController {
     public ResponseEntity<Void> deleteComment(@PathVariable String commentId, @PathVariable String bookId) {
         this.bookService.removeComment(commentId);
         return ResponseEntity
-                .status(HttpStatus.NO_CONTENT)
+                .noContent()
                 .build();
+    }
+
+    @ExceptionHandler(value = {BookNotFoundException.class, CommentNotFoundException.class})
+    public ResponseEntity<Void> resourceNotFoundException() {
+        return ResponseEntity
+                .notFound()
+                .build();
+    }
+
+    @ExceptionHandler(value = {FieldFormatException.class})
+    public ResponseEntity<Error> fieldErrorException(FieldFormatException ex) {
+        return ResponseEntity
+                .badRequest()
+                .body(Error.from(ex));
+    }
+
+    static class Error {
+
+        private final String message;
+
+        public Error(String message) {
+            this.message = message;
+        }
+
+        public static Error from(Exception ex) {
+            return new Error(ex.getMessage());
+        }
+
+        public String getMessage() {
+            return message;
+        }
     }
 
 }
