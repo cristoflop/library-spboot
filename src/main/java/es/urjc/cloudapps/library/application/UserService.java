@@ -1,8 +1,10 @@
 package es.urjc.cloudapps.library.application;
 
+import es.urjc.cloudapps.library.application.dtos.CreateUserDto;
 import es.urjc.cloudapps.library.application.dtos.UserDto;
 import es.urjc.cloudapps.library.data.UserJpaRepository;
 import es.urjc.cloudapps.library.domain.User;
+import es.urjc.cloudapps.library.exception.UserAlreadyExistsException;
 import es.urjc.cloudapps.library.exception.UserNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +35,15 @@ public class UserService {
     public UserDto getUser(String nick) {
         User user = this.userJpaRepository.getUser(nick).orElseThrow(UserNotFoundException::new);
         return new UserDto(user.getId(), user.getNick(), user.getEmail());
+    }
+
+    public Long createUser(CreateUserDto user) {
+        User exists = this.userJpaRepository.getUser(user.getNick()).orElse(null);
+        if (exists == null) {
+            return this.userJpaRepository.createOrUpdateUser(new User(null, user.getNick(), user.getEmail())).getId();
+        } else {
+            throw new UserAlreadyExistsException();
+        }
     }
 
 }
