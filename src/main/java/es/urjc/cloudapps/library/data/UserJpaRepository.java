@@ -26,4 +26,8 @@ public class UserJpaRepository {
         return this.userSpringRepository.findByNick(nick);
     }
 
+    public User createOrUpdateUser(User user) {
+        return this.userSpringRepository.save(user);
+    }
+
 }
