@@ -16,4 +16,12 @@ public class UserJpaRepository {
         return this.userSpringRepository.findAll();
     }
 
+    public User getUser(Long id) {
+        return this.userSpringRepository.findById(id).orElse(null);
+    }
+
+    public User getUser(String nick) {
+        return this.userSpringRepository.findByNick(nick).orElse(null);
+    }
+
 }
