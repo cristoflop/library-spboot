@@ -1,6 +1,7 @@
 package es.urjc.cloudapps.library.application;
 
 import es.urjc.cloudapps.library.application.dtos.CreateUserDto;
+import es.urjc.cloudapps.library.application.dtos.UpdateUserDto;
 import es.urjc.cloudapps.library.application.dtos.UserDto;
 import es.urjc.cloudapps.library.data.UserJpaRepository;
 import es.urjc.cloudapps.library.domain.User;
@@ -8,6 +9,7 @@ import es.urjc.cloudapps.library.exception.UserAlreadyExistsException;
 import es.urjc.cloudapps.library.exception.UserNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -20,7 +22,7 @@ public class UserService {
     public UserService(UserJpaRepository userJpaRepository) {
         this.userJpaRepository = userJpaRepository;
     }
-
+    
     public List<UserDto> getUsers() {
         return StreamSupport.stream(this.userJpaRepository.getUsers().spliterator(), false)
                 .map(user -> new UserDto(user.getId(), user.getNick(), user.getEmail()))
@@ -37,13 +39,19 @@ public class UserService {
         return new UserDto(user.getId(), user.getNick(), user.getEmail());
     }
 
-    public Long createUser(CreateUserDto user) {
-        User exists = this.userJpaRepository.getUser(user.getNick()).orElse(null);
-        if (exists == null) {
-            return this.userJpaRepository.createOrUpdateUser(new User(null, user.getNick(), user.getEmail())).getId();
+    public Long createUser(CreateUserDto userDto) {
+        User user = this.userJpaRepository.getUser(userDto.getNick()).orElse(null);
+        if (user == null) {
+            return this.userJpaRepository.createOrUpdateUser(new User(null, userDto.getNick(), userDto.getEmail())).getId();
         } else {
             throw new UserAlreadyExistsException();
         }
+    }
+
+    public Long updateUser(UpdateUserDto userDto) {
+        User user = this.userJpaRepository.getUser(userDto.getId()).orElseThrow(UserNotFoundException::new);
+        user.setEmail(userDto.getEmail());
+        return this.userJpaRepository.createOrUpdateUser(user).getId();
     }
 
 }
