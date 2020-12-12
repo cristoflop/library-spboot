@@ -25,10 +25,12 @@ public class User {
     @JoinColumn(name = "Books", referencedColumnName = "id")
     private List<Book> books;
 
-    public User(Long id, String nick, String email) {
+    public User(Long id, String nick, String email, List<Comment> comments, List<Book> books) {
         this.id = id;
         this.nick = nick;
         this.email = email;
+        this.comments = comments;
+        this.books = books;
     }
 
     public Long getId() {
