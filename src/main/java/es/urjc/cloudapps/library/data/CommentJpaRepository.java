@@ -40,7 +40,7 @@ public class CommentJpaRepository {
     }
 
     public List<Comment> findAllOf(Book book) {
-        return StreamSupport.stream(this.commentSpringRepository.findAll().spliterator(), false)
+        return this.commentSpringRepository.all()
                 .filter(c -> c.getBook().equals(book))
                 .collect(Collectors.toList());
     }

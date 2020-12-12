@@ -11,7 +11,6 @@ import java.util.Optional;
 @Repository
 public interface UserSpringRepository extends CrudRepository<User, Long> {
 
-    @Query("from User u where u.nick = :nick")
-    Optional<User> findByNick(@Param("nick") String nick);
+    Optional<User> findByNick(String nick);
 
 }

@@ -59,15 +59,7 @@ public class Comment {
         return body;
     }
 
-    public void setBody(String body) {
-        this.body = body;
-    }
-
     public Rating getRating() {
         return rating;
-    }
-
-    public void setRating(Rating rating) {
-        this.rating = rating;
     }
 }

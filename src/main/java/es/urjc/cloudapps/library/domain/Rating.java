@@ -9,7 +9,9 @@ import javax.persistence.Embeddable;
 public class Rating {
 
     @Column(name = "rating")
-    private final int value;
+    private int value;
+
+    protected Rating(){ }
 
     public Rating(int value) {
         if (value < 0 || value > 5)

@@ -15,7 +15,11 @@ public class User {
     @Column(unique = true)
     private String nick;
 
-    private String email;
+    @Embedded
+    private Email email;
+
+    protected User() {
+    }
 
     @OneToMany
     @JoinColumn(name = "Comments", referencedColumnName = "id")
@@ -37,23 +41,15 @@ public class User {
         return this.id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getNick() {
         return this.nick;
     }
 
-    public void setNick(String nick) {
-        this.nick = nick;
-    }
-
-    public String getEmail() {
+    public Email getEmail() {
         return this.email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(Email email) {
         this.email = email;
     }
 

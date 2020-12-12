@@ -4,13 +4,13 @@ import es.urjc.cloudapps.library.application.dtos.CreateUserDto;
 import es.urjc.cloudapps.library.application.dtos.UpdateUserDto;
 import es.urjc.cloudapps.library.application.dtos.UserDto;
 import es.urjc.cloudapps.library.data.UserJpaRepository;
+import es.urjc.cloudapps.library.domain.Email;
 import es.urjc.cloudapps.library.domain.User;
 import es.urjc.cloudapps.library.exception.UserAlreadyExistsException;
 import es.urjc.cloudapps.library.exception.UserNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -26,18 +26,18 @@ public class UserService {
 
     public List<UserDto> getUsers() {
         return StreamSupport.stream(this.userJpaRepository.getUsers().spliterator(), false)
-                .map(user -> new UserDto(user.getId(), user.getNick(), user.getEmail()))
+                .map(user -> new UserDto(user.getId(), user.getNick(), user.getEmail().getValue()))
                 .collect(Collectors.toList());
     }
 
     public UserDto getUser(Long id) {
         User user = this.userJpaRepository.getUser(id).orElseThrow(UserNotFoundException::new);
-        return new UserDto(user.getId(), user.getNick(), user.getEmail());
+        return new UserDto(user.getId(), user.getNick(), user.getEmail().getValue());
     }
 
     public UserDto getUser(String nick) {
         User user = this.userJpaRepository.getUser(nick).orElseThrow(UserNotFoundException::new);
-        return new UserDto(user.getId(), user.getNick(), user.getEmail());
+        return new UserDto(user.getId(), user.getNick(), user.getEmail().getValue());
     }
 
     @Transactional
@@ -46,9 +46,7 @@ public class UserService {
         if (user == null) {
             return this.userJpaRepository.createOrUpdateUser(new User(null,
                     userDto.getNick(),
-                    userDto.getEmail(),
-                    new ArrayList<>(),
-                    new ArrayList<>()))
+                    new Email(userDto.getEmail())))
                     .getId();
         } else {
             throw new UserAlreadyExistsException();
@@ -58,7 +56,7 @@ public class UserService {
     @Transactional
     public Long updateUserEmail(UpdateUserDto userDto) {
         User user = this.userJpaRepository.getUser(userDto.getId()).orElseThrow(UserNotFoundException::new);
-        user.setEmail(userDto.getEmail());
+        user.setEmail(new Email(userDto.getEmail()));
         return this.userJpaRepository.createOrUpdateUser(user).getId();
     }
 

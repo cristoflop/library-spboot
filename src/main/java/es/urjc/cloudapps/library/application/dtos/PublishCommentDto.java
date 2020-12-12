@@ -1,20 +1,20 @@
 package es.urjc.cloudapps.library.application.dtos;
 
 public class PublishCommentDto {
-    private final String authorName;
+    private final String nick;
     private final String body;
     private final int rating;
     private String bookId;
 
-    public PublishCommentDto(String bookId, String authorName, String body, int rating) {
+    public PublishCommentDto(String bookId, String nick, String body, int rating) {
         this.bookId = bookId;
-        this.authorName = authorName;
+        this.nick = nick;
         this.body = body;
         this.rating = rating;
     }
 
-    public String getAuthorName() {
-        return authorName;
+    public String getNick() {
+        return nick;
     }
 
     public String getBody() {

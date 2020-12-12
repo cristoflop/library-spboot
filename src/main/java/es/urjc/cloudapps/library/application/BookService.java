@@ -45,7 +45,10 @@ public class BookService {
         if (book == null)
             throw new BookNotFoundException(comment.getBookId());
 
-        User user = this.userJpaRepository.getUser(comment.getAuthorName()).orElseThrow(UserNotFoundException::new);
+        User user = this.userJpaRepository
+                .getUser(comment.getNick())
+                .orElseThrow(UserNotFoundException::new);
+
         Comment newComment = new Comment(
                 null,
                 book,
@@ -116,12 +119,5 @@ public class BookService {
         } catch (Exception e) {
             throw new FieldFormatException("Año de publicacion con formato incorrecto");
         }
-    }
-
-    private void checkPublishCommentDto(PublishCommentDto comment) {
-        if (comment.getAuthorName() == null || comment.getAuthorName().trim().isEmpty())
-            throw new FieldFormatException("El autor no debe estar vacío");
-        if (comment.getBody() == null || comment.getBody().trim().isEmpty())
-            throw new FieldFormatException("El comentario no debe estar vacío");
     }
 }
