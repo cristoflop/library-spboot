@@ -2,6 +2,7 @@ package es.urjc.cloudapps.library.domain;
 
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "Users")
@@ -15,6 +16,14 @@ public class User {
     private String nick;
 
     private String email;
+
+    @OneToMany
+    @JoinColumn(name = "Comments", referencedColumnName = "id")
+    private List<Comment> comments;
+
+    @OneToMany
+    @JoinColumn(name = "Books", referencedColumnName = "id")
+    private List<Book> books;
 
     public User(Long id, String nick, String email) {
         this.id = id;
@@ -46,4 +55,19 @@ public class User {
         this.email = email;
     }
 
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
 }
