@@ -9,6 +9,7 @@ import es.urjc.cloudapps.library.exception.UserAlreadyExistsException;
 import es.urjc.cloudapps.library.exception.UserNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -38,6 +39,7 @@ public class UserService {
         return new UserDto(user.getId(), user.getNick(), user.getEmail());
     }
 
+    @Transactional
     public Long createUser(CreateUserDto userDto) {
         User user = this.userJpaRepository.getUser(userDto.getNick()).orElse(null);
         if (user == null) {
@@ -47,12 +49,14 @@ public class UserService {
         }
     }
 
+    @Transactional
     public Long updateUserEmail(UpdateUserDto userDto) {
         User user = this.userJpaRepository.getUser(userDto.getId()).orElseThrow(UserNotFoundException::new);
         user.setEmail(userDto.getEmail());
         return this.userJpaRepository.createOrUpdateUser(user).getId();
     }
 
+    @Transactional
     public void deleteUser(Long id) {
         User user = this.userJpaRepository.getUser(id).orElseThrow(UserNotFoundException::new);
         this.userJpaRepository.deleteUser(user);
