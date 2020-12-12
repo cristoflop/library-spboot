@@ -1,14 +1,17 @@
 package es.urjc.cloudapps.library.application;
 
 import es.urjc.cloudapps.library.application.dtos.*;
+import es.urjc.cloudapps.library.data.CommentJpaRepository;
 import es.urjc.cloudapps.library.data.InMemoryBookRepository;
-import es.urjc.cloudapps.library.data.InMemoryCommentRepository;
+import es.urjc.cloudapps.library.data.UserJpaRepository;
 import es.urjc.cloudapps.library.domain.Book;
 import es.urjc.cloudapps.library.domain.Comment;
 import es.urjc.cloudapps.library.domain.Rating;
+import es.urjc.cloudapps.library.domain.User;
 import es.urjc.cloudapps.library.exception.BookNotFoundException;
 import es.urjc.cloudapps.library.exception.CommentNotFoundException;
 import es.urjc.cloudapps.library.exception.FieldFormatException;
+import es.urjc.cloudapps.library.exception.UserNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,12 +21,15 @@ import java.util.stream.Collectors;
 public class BookService {
 
     private final InMemoryBookRepository bookRepository;
-    private final InMemoryCommentRepository commentRepository;
+    private final CommentJpaRepository commentJpaRepository;
+    private final UserJpaRepository userJpaRepository;
 
     public BookService(InMemoryBookRepository bookRepository,
-                       InMemoryCommentRepository commentRepository) {
+                       CommentJpaRepository commentJpaRepository,
+                       UserJpaRepository userJpaRepository) {
         this.bookRepository = bookRepository;
-        this.commentRepository = commentRepository;
+        this.commentJpaRepository = commentJpaRepository;
+        this.userJpaRepository = userJpaRepository;
     }
 
     public List<BookDto> getAllBooks() {
@@ -31,25 +37,25 @@ public class BookService {
                 book -> new BookDto(book.getId().getValue(), book.getTitle())).collect(Collectors.toList());
     }
 
-    public String publishComment(PublishCommentDto comment) {
+    public Long publishComment(PublishCommentDto comment) {
         this.checkPublishCommentDto(comment);
+
         Book.Id id = new Book.Id(comment.getBookId());
         Book book = bookRepository.get(id);
-
         if (book == null)
             throw new BookNotFoundException(comment.getBookId());
 
+        User user = this.userJpaRepository.getUser(comment.getAuthorName()).orElseThrow(UserNotFoundException::new);
         Comment newComment = new Comment(
-                commentRepository.newId(),
+                null,
                 book,
-                comment.getAuthorName(),
+                user,
                 comment.getBody(),
                 new Rating(comment.getRating())
         );
 
-        commentRepository.save(newComment);
-
-        return newComment.getId().toString();
+        this.commentJpaRepository.save(newComment);
+        return newComment.getId();
     }
 
     public String createBook(CreateBookDto book) {
@@ -74,17 +80,12 @@ public class BookService {
         if (book == null)
             throw new BookNotFoundException(bookId);
 
-        // Este enfoque no sirve cuando el nivel de aislamiento
-        // es inferior a REPEATABLE_READ, puesto que durante el tiempo
-        // que pasa entre findAllOf() y getRatingAverageOf(), la primera
-        // podría obtener una lista y la segunda calcular el rating
-        // sobre una lista diferente.
-        List<Comment> comments = commentRepository.findAllOf(book);
-        double bookRating = commentRepository.getRatingAverageOf(book);
+        List<Comment> comments = this.commentJpaRepository.findAllOf(book);
+        double bookRating = this.commentJpaRepository.getRatingAverageOf(book);
 
         List<CommentDto> mappedComments = comments
                 .stream()
-                .map(c -> new CommentDto(c.getId().toString(), c.getAuthorName(), c.getBody(), c.getRating().getValue()))
+                .map(c -> new CommentDto(c.getId().toString(), c.getAuthor().getNick(), c.getBody(), c.getRating().getValue()))
                 .collect(Collectors.toList());
 
         return new GetBookWithCommentsDto(
@@ -99,13 +100,10 @@ public class BookService {
         );
     }
 
-    public void removeComment(String id) {
-        Comment.Id commentId = new Comment.Id(id);
-        Comment comment = commentRepository.get(commentId);
-        if (comment == null)
-            throw new CommentNotFoundException(commentId.toString());
-
-        commentRepository.remove(comment);
+    public void removeComment(String commentId) {
+        Long id = Long.parseLong(commentId);
+        Comment comment = this.commentJpaRepository.getComment(id).orElseThrow(CommentNotFoundException::new);
+        this.commentJpaRepository.delete(comment);
     }
 
     private void checkCreateBookDto(CreateBookDto book) {

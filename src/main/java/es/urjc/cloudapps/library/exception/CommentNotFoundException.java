@@ -1,9 +1,8 @@
 package es.urjc.cloudapps.library.exception;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "Comment not found")
 public class CommentNotFoundException extends RuntimeException {
-
-    public CommentNotFoundException(String id) {
-        super(String.format("The comment with id: %s doesn't exist", id));
-    }
-
 }
