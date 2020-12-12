@@ -30,4 +30,8 @@ public class UserJpaRepository {
         return this.userSpringRepository.save(user);
     }
 
+    public void deleteUser(User user) {
+        this.userSpringRepository.delete(user);
+    }
+
 }
