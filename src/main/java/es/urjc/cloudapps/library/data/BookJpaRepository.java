@@ -16,7 +16,7 @@ public class BookJpaRepository {
     }
 
     public Stream<Book> getBooks() {
-        return this.bookSpringRepository.all();
+        return this.bookSpringRepository.findAll().stream();
     }
 
     public Optional<Book> getBook(Long id) {

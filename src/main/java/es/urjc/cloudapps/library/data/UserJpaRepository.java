@@ -16,7 +16,7 @@ public class UserJpaRepository {
     }
 
     public Stream<User> getUsers() {
-        return this.userSpringRepository.all();
+        return this.userSpringRepository.findAll().stream();
     }
 
     public Optional<User> getUser(Long id) {
