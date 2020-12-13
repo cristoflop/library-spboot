@@ -5,14 +5,13 @@ import es.urjc.cloudapps.library.domain.Comment;
 import es.urjc.cloudapps.library.domain.User;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Repository
 public class CommentJpaRepository {
 
-    private CommentSpringRepository commentSpringRepository;
+    private final CommentSpringRepository commentSpringRepository;
 
     public CommentJpaRepository(CommentSpringRepository commentSpringRepository) {
         this.commentSpringRepository = commentSpringRepository;
@@ -38,16 +37,12 @@ public class CommentJpaRepository {
         this.commentSpringRepository.delete(comment);
     }
 
-    public List<Comment> findAllOf(Book book) {
-        return this.commentSpringRepository.all()
-                .filter(c -> c.getBook().equals(book))
-                .collect(Collectors.toList());
+    public Stream<Comment> findAllOf(Book book) {
+        return this.commentSpringRepository.findAllByBook(book);
     }
 
-    public List<Comment> findAllOf(User user) {
-        return this.commentSpringRepository.all()
-                .filter(c -> c.getAuthor().equals(user))
-                .collect(Collectors.toList());
+    public Stream<Comment> findAllOf(User user) {
+        return this.commentSpringRepository.findAllByAuthor(user);
     }
 
 }
