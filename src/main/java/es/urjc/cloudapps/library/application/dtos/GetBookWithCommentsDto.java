@@ -4,7 +4,7 @@ import java.util.List;
 
 public class GetBookWithCommentsDto {
 
-    private final String id;
+    private final Long id;
     private final String title;
     private final String summary;
     private final String author;
@@ -14,7 +14,7 @@ public class GetBookWithCommentsDto {
     private final double rating;
     private final String uploader;
 
-    public GetBookWithCommentsDto(String id,
+    public GetBookWithCommentsDto(Long id,
                                   String title,
                                   String summary,
                                   String author,
@@ -33,7 +33,7 @@ public class GetBookWithCommentsDto {
         this.uploader = uploader;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 

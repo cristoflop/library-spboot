@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class UserService {
 
     private final UserJpaRepository userJpaRepository;
@@ -53,7 +54,6 @@ public class UserService {
                 user.getEmail().getValue());
     }
 
-    @Transactional
     public Long createUser(CreateUserDto userDto) {
         User user = this.userJpaRepository
                 .getUser(userDto.getNick())
@@ -69,7 +69,6 @@ public class UserService {
         }
     }
 
-    @Transactional
     public Long updateUserEmail(UpdateUserDto userDto) {
         User user = this.userJpaRepository
                 .getUser(userDto.getId())
@@ -80,7 +79,6 @@ public class UserService {
                 .getId();
     }
 
-    @Transactional
     public void deleteUser(Long id) {
         User user = this.userJpaRepository
                 .getUser(id)

@@ -35,13 +35,15 @@ public class BookService {
     }
 
     public List<BookDto> getAllBooks() {
-        return this.bookRepository.getAll().stream().map(
-                book -> new BookDto(book.getId().getValue(), book.getTitle())).collect(Collectors.toList());
+        return this.bookJpaRepository
+                .getBooks()
+                .map(book -> new BookDto(book.getId(), book.getTitle()))
+                .collect(Collectors.toList());
     }
 
     public Long publishComment(PublishCommentDto comment) {
         Book book = this.bookJpaRepository
-                .getBook(Long.parseLong(comment.getBookId()))
+                .getBook(comment.getBookId())
                 .orElseThrow(BookNotFoundException::new);
         User user = this.userJpaRepository
                 .getUser(comment.getNick())
@@ -74,15 +76,15 @@ public class BookService {
         return this.bookJpaRepository.save(newBook).getId();
     }
 
-    public GetBookWithCommentsDto getBookWithComments(String bookId) {
+    public GetBookWithCommentsDto getBookWithComments(Long bookId) {
         Book book = this.bookJpaRepository
-                .getBook(Long.parseLong(bookId))
+                .getBook(bookId)
                 .orElseThrow(BookNotFoundException::new);
         double bookRating = this.commentJpaRepository
                 .getRatingAverageOf(book);
         List<CommentDto> mappedComments = this.commentJpaRepository
                 .findAllOf(book)
-                .map(c -> new CommentDto(c.getId().toString(), c.getAuthor().getNick(), c.getBody(), c.getRating().getValue()))
+                .map(c -> new CommentDto(c.getId(), c.getAuthor().getNick(), c.getBody(), c.getRating().getValue()))
                 .collect(Collectors.toList());
         return new GetBookWithCommentsDto(
                 bookId,
@@ -97,8 +99,7 @@ public class BookService {
         );
     }
 
-    public void removeComment(String commentId) {
-        Long id = Long.parseLong(commentId);
+    public void removeComment(Long id) {
         Comment comment = this.commentJpaRepository
                 .getComment(id)
                 .orElseThrow(CommentNotFoundException::new);

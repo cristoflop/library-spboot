@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 @Repository
 public class BookJpaRepository {
 
-    private BookSpringRepository bookSpringRepository;
+    private final BookSpringRepository bookSpringRepository;
 
     public BookJpaRepository(BookSpringRepository bookSpringRepository) {
         this.bookSpringRepository = bookSpringRepository;

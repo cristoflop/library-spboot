@@ -53,7 +53,7 @@ public class RestBookController {
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = GetBookWithCommentsDto.class))}),
             @ApiResponse(responseCode = "404", content = {@Content()}, description = "Book not found")})
-    public ResponseEntity<GetBookWithCommentsDto> getBook(@PathVariable String id) {
+    public ResponseEntity<GetBookWithCommentsDto> getBook(@PathVariable Long id) {
         return ResponseEntity
                 .ok(this.bookService.getBookWithComments(id));
     }
@@ -87,7 +87,7 @@ public class RestBookController {
             @ApiResponse(responseCode = "400", description = "Fields input validation error"),
             @ApiResponse(responseCode = "404", description = "Book not found")
     })
-    public ResponseEntity<Void> publishComment(@RequestBody PublishCommentDto commentDto, @PathVariable String bookId) {
+    public ResponseEntity<Void> publishComment(@RequestBody PublishCommentDto commentDto, @PathVariable Long bookId) {
         commentDto.setBookId(bookId);
         this.bookService.publishComment(commentDto);
 
@@ -107,7 +107,7 @@ public class RestBookController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "The comment has been deleted"),
             @ApiResponse(responseCode = "404", description = "Comment not found")})
-    public ResponseEntity<Void> deleteComment(@PathVariable String commentId, @PathVariable String bookId) {
+    public ResponseEntity<Void> deleteComment(@PathVariable Long commentId, @PathVariable Long bookId) {
         this.bookService.removeComment(commentId);
         return ResponseEntity
                 .noContent()

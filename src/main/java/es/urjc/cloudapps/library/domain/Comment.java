@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "Comments")
+@Access(AccessType.FIELD)
 public class Comment {
 
     @Id
@@ -11,17 +12,18 @@ public class Comment {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "book_id")
     private Book book;
 
     @ManyToOne
-    @JoinColumn(name = "author_id")
     private User author;
 
     private String body;
 
     @Embedded
     private Rating rating;
+
+    public Comment() {
+    }
 
     public Comment(Long id, Book book, User author, String body, Rating rating) {
         this.id = id;
@@ -43,16 +45,8 @@ public class Comment {
         return book;
     }
 
-    public void setBook(Book book) {
-        this.book = book;
-    }
-
     public User getAuthor() {
         return author;
-    }
-
-    public void setAuthor(User author) {
-        this.author = author;
     }
 
     public String getBody() {

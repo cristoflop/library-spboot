@@ -26,11 +26,7 @@ public class CommentJpaRepository {
     }
 
     public double getRatingAverageOf(Book book) {
-        return StreamSupport.stream(this.commentSpringRepository.findAll().spliterator(), false)
-                .filter(comment -> comment.getBook().getId().equals(book.getId()))
-                .mapToInt(comment -> comment.getRating().getValue())
-                .average()
-                .orElse(0);
+        return this.commentSpringRepository.getRatingAverageOf(book);
     }
 
     public void delete(Comment comment) {

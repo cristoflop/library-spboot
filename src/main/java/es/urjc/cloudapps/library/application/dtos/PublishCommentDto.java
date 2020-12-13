@@ -4,9 +4,9 @@ public class PublishCommentDto {
     private final String nick;
     private final String body;
     private final int rating;
-    private String bookId;
+    private Long bookId;
 
-    public PublishCommentDto(String bookId, String nick, String body, int rating) {
+    public PublishCommentDto(Long bookId, String nick, String body, int rating) {
         this.bookId = bookId;
         this.nick = nick;
         this.body = body;
@@ -25,11 +25,12 @@ public class PublishCommentDto {
         return rating;
     }
 
-    public String getBookId() {
+    public Long getBookId() {
         return bookId;
     }
 
-    public void setBookId(String bookId) {
+    public void setBookId(Long bookId) {
         this.bookId = bookId;
     }
+
 }

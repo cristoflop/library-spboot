@@ -2,6 +2,7 @@ package es.urjc.cloudapps.library.domain;
 
 import es.urjc.cloudapps.library.exception.FieldFormatException;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -9,6 +10,7 @@ import java.util.regex.Pattern;
 @Embeddable
 public class Email {
 
+    @Column(name = "email")
     private String value;
 
     private static final String EMAIL_PATTERN =
