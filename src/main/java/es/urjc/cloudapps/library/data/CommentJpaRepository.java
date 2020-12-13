@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Repository
 public class CommentJpaRepository {
@@ -46,7 +45,7 @@ public class CommentJpaRepository {
     }
 
     public List<Comment> findAllOf(User user) {
-        return StreamSupport.stream(this.commentSpringRepository.findAll().spliterator(), false)
+        return this.commentSpringRepository.all()
                 .filter(c -> c.getAuthor().equals(user))
                 .collect(Collectors.toList());
     }
