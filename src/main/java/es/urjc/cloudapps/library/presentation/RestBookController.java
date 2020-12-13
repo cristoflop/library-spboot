@@ -66,7 +66,7 @@ public class RestBookController {
             }),
             @ApiResponse(responseCode = "400", description = "Fields input validation error")})
     public ResponseEntity<Void> createBook(@Valid @RequestBody CreateBookDto newBook) {
-        String bookId = this.bookService.createBook(newBook);
+        Long bookId = this.bookService.createBook(newBook);
 
         URI newBookLocation = fromCurrentRequest()
                 .path("/{bookId}")
