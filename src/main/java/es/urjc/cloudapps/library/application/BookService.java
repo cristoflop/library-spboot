@@ -78,12 +78,10 @@ public class BookService {
         Book book = this.bookJpaRepository
                 .getBook(Long.parseLong(bookId))
                 .orElseThrow(BookNotFoundException::new);
-        List<Comment> comments = this.commentJpaRepository
-                .findAllOf(book);
         double bookRating = this.commentJpaRepository
                 .getRatingAverageOf(book);
-        List<CommentDto> mappedComments = comments
-                .stream()
+        List<CommentDto> mappedComments = this.commentJpaRepository
+                .findAllOf(book)
                 .map(c -> new CommentDto(c.getId().toString(), c.getAuthor().getNick(), c.getBody(), c.getRating().getValue()))
                 .collect(Collectors.toList());
         return new GetBookWithCommentsDto(
