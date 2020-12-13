@@ -4,18 +4,19 @@ import es.urjc.cloudapps.library.domain.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Repository
 public class UserJpaRepository {
 
-    private UserSpringRepository userSpringRepository;
+    private final UserSpringRepository userSpringRepository;
 
     public UserJpaRepository(UserSpringRepository userSpringRepository) {
         this.userSpringRepository = userSpringRepository;
     }
 
-    public Iterable<User> getUsers() {
-        return this.userSpringRepository.findAll();
+    public Stream<User> getUsers() {
+        return this.userSpringRepository.all();
     }
 
     public Optional<User> getUser(Long id) {
