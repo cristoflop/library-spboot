@@ -1,33 +1,52 @@
 package es.urjc.cloudapps.library.domain;
 
-import java.util.Objects;
+import javax.persistence.*;
 
+@Entity
+@Table(name = "Comments")
+@Access(AccessType.FIELD)
 public class Comment {
 
-    private final Id id;
-    private final Book.Id bookId;
-    private final String authorName;
-    private final String body;
-    private final Rating rating;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-    public Comment(Id id, Book book, String authorName, String body, Rating rating) {
+    @ManyToOne
+    private Book book;
+
+    @ManyToOne
+    private User author;
+
+    private String body;
+
+    @Embedded
+    private Rating rating;
+
+    public Comment() {
+    }
+
+    public Comment(Long id, Book book, User author, String body, Rating rating) {
         this.id = id;
-        this.bookId = book.getId();
-        this.authorName = authorName;
+        this.book = book;
+        this.author = author;
         this.body = body;
         this.rating = rating;
     }
 
-    public Id getId() {
+    public Long getId() {
         return id;
     }
 
-    public Book.Id getBookId() {
-        return bookId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getAuthorName() {
-        return authorName;
+    public Book getBook() {
+        return book;
+    }
+
+    public User getAuthor() {
+        return author;
     }
 
     public String getBody() {
@@ -35,37 +54,6 @@ public class Comment {
     }
 
     public Rating getRating() {
-        return this.rating;
-    }
-
-    public static class Id {
-        private final String value;
-
-        public Id(String value) {
-            Long.parseLong(value);
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        @Override
-        public String toString() {
-            return this.value;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Id commentId = (Id) o;
-            return Objects.equals(value, commentId.value);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(value);
-        }
+        return rating;
     }
 }

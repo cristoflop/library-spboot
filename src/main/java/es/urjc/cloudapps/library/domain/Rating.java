@@ -2,9 +2,16 @@ package es.urjc.cloudapps.library.domain;
 
 import es.urjc.cloudapps.library.exception.FieldFormatException;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class Rating {
 
-    private final int value;
+    @Column(name = "rating")
+    private int value;
+
+    protected Rating(){ }
 
     public Rating(int value) {
         if (value < 0 || value > 5)

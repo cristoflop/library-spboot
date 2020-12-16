@@ -2,19 +2,19 @@ package es.urjc.cloudapps.library.application.dtos;
 
 public class CommentDto {
 
-    private final String id;
+    private final Long id;
     private final String authorName;
     private final String body;
     private final int rating;
 
-    public CommentDto(String id, String authorName, String body, int rating) {
+    public CommentDto(Long id, String authorName, String body, int rating) {
         this.id = id;
         this.authorName = authorName;
         this.body = body;
         this.rating = rating;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 

@@ -1,26 +1,43 @@
 package es.urjc.cloudapps.library.domain;
 
-import java.util.Objects;
+import javax.persistence.*;
 
+@Entity
+@Table(name = "Books")
+@Access(AccessType.FIELD)
 public class Book {
 
-    private final Id id;
-    private final String title;
-    private final String summary;
-    private final String author;
-    private final String editorial;
-    private final int publishYear;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-    public Book(Id id, String title, String summary, String author, String editorial, int publishYear) {
+    private String title;
+
+    private String summary;
+
+    private String author;
+
+    private String editorial;
+
+    private int publishYear;
+
+    @ManyToOne
+    private User uploader;
+
+    protected Book() {
+    }
+
+    public Book(Long id, String title, String summary, String author, String editorial, int publishYear, User uploader) {
         this.id = id;
         this.title = title;
         this.summary = summary;
         this.author = author;
         this.editorial = editorial;
         this.publishYear = publishYear;
+        this.uploader = uploader;
     }
 
-    public Id getId() {
+    public Long getId() {
         return this.id;
     }
 
@@ -44,34 +61,8 @@ public class Book {
         return this.publishYear;
     }
 
-    public static class Id {
-        private final String value;
-
-        public Id(String value) {
-            Long.parseLong(value);
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        @Override
-        public String toString() {
-            return this.value;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Id bookId = (Id) o;
-            return Objects.equals(value, bookId.value);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(value);
-        }
+    public User getUploader() {
+        return this.uploader;
     }
+
 }
