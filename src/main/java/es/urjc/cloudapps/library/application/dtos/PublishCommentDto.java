@@ -1,9 +1,13 @@
 package es.urjc.cloudapps.library.application.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class PublishCommentDto {
+
     private final String nick;
     private final String body;
     private final int rating;
+    @JsonIgnore
     private Long bookId;
 
     public PublishCommentDto(Long bookId, String nick, String body, int rating) {

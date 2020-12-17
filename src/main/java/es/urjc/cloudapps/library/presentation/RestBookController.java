@@ -5,9 +5,6 @@ import es.urjc.cloudapps.library.application.dtos.BookDto;
 import es.urjc.cloudapps.library.application.dtos.CreateBookDto;
 import es.urjc.cloudapps.library.application.dtos.GetBookWithCommentsDto;
 import es.urjc.cloudapps.library.application.dtos.PublishCommentDto;
-import es.urjc.cloudapps.library.exception.BookNotFoundException;
-import es.urjc.cloudapps.library.exception.CommentNotFoundException;
-import es.urjc.cloudapps.library.exception.FieldFormatException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -112,37 +109,6 @@ public class RestBookController {
         return ResponseEntity
                 .noContent()
                 .build();
-    }
-
-    @ExceptionHandler(value = {BookNotFoundException.class, CommentNotFoundException.class})
-    public ResponseEntity<Void> resourceNotFoundException() {
-        return ResponseEntity
-                .notFound()
-                .build();
-    }
-
-    @ExceptionHandler(value = {FieldFormatException.class})
-    public ResponseEntity<Error> fieldErrorException(FieldFormatException ex) {
-        return ResponseEntity
-                .badRequest()
-                .body(Error.from(ex));
-    }
-
-    static class Error {
-
-        private final String message;
-
-        public Error(String message) {
-            this.message = message;
-        }
-
-        public static Error from(Exception ex) {
-            return new Error(ex.getMessage());
-        }
-
-        public String getMessage() {
-            return message;
-        }
     }
 
 }

@@ -27,6 +27,10 @@ public class User {
         this.email = email;
     }
 
+    public User(String nick, Email email) {
+        this(null, nick, email);
+    }
+
     public Long getId() {
         return this.id;
     }

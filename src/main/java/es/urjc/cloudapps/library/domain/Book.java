@@ -1,6 +1,9 @@
 package es.urjc.cloudapps.library.domain;
 
+import es.urjc.cloudapps.library.exception.FieldFormatException;
+
 import javax.persistence.*;
+import java.time.Year;
 
 @Entity
 @Table(name = "Books")
@@ -27,14 +30,25 @@ public class Book {
     protected Book() {
     }
 
-    public Book(Long id, String title, String summary, String author, String editorial, int publishYear, User uploader) {
+    public Book(String title, String summary, String author, String editorial, Year parse, User user) {
+        this(null, title, summary, author, editorial, parse, user);
+    }
+
+    public Book(Long id, String title, String summary, String author,
+                String editorial, Year publishYear, User uploader) {
+        this.checkTitle(title);
         this.id = id;
         this.title = title;
         this.summary = summary;
         this.author = author;
         this.editorial = editorial;
-        this.publishYear = publishYear;
+        this.publishYear = publishYear.getValue();
         this.uploader = uploader;
+    }
+
+    private void checkTitle(String title) {
+        if (title == null || title.trim().isEmpty())
+            throw new FieldFormatException("El título no debe estar vacío");
     }
 
     public Long getId() {

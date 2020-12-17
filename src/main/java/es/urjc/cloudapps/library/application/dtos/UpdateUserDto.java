@@ -1,7 +1,10 @@
 package es.urjc.cloudapps.library.application.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class UpdateUserDto {
 
+    @JsonIgnore
     private Long id;
     private String email;
 

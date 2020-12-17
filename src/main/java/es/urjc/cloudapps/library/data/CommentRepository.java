@@ -10,13 +10,15 @@ import org.springframework.stereotype.Repository;
 import java.util.stream.Stream;
 
 @Repository
-public interface CommentSpringRepository extends CrudRepository<Comment, Long> {
+public interface CommentRepository extends CrudRepository<Comment, Long> {
 
     @Query("SELECT AVG(c.rating) from Comment c where c.book = ?1")
     double getRatingAverageOf(Book book);
 
     Stream<Comment> findAllByBook(Book book);
 
-    Stream<Comment> findAllByAuthor(User author);
+    Stream<Comment> findAllByAuthor(User user);
+
+    Long countAllByAuthor(User author);
 
 }

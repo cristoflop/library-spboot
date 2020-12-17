@@ -33,6 +33,10 @@ public class Comment {
         this.rating = rating;
     }
 
+    public Comment(Book book, User user, String body, Rating rating) {
+        this(null, book, user, body, rating);
+    }
+
     public Long getId() {
         return id;
     }
