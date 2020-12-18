@@ -88,7 +88,7 @@ public class BookService {
                 .findById(bookId)
                 .orElseThrow(BookNotFoundException::new);
 
-        double bookRating = this.commentRepository
+        Double bookRating = this.commentRepository
                 .getRatingAverageOf(book);
 
         List<CommentDto> mappedComments = this.commentRepository

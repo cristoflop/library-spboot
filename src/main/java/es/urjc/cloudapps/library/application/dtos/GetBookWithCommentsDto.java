@@ -11,7 +11,7 @@ public class GetBookWithCommentsDto {
     private final String editorial;
     private final int publishYear;
     private final List<CommentDto> comments;
-    private final double rating;
+    private final Double rating;
     private final Long uploaderId;
 
     public GetBookWithCommentsDto(Long id,
@@ -20,7 +20,7 @@ public class GetBookWithCommentsDto {
                                   String author,
                                   String editorial,
                                   int publishYear,
-                                  double rating, List<CommentDto> comments,
+                                  Double rating, List<CommentDto> comments,
                                   Long uploaderId) {
         this.id = id;
         this.title = title;
@@ -57,7 +57,7 @@ public class GetBookWithCommentsDto {
         return this.publishYear;
     }
 
-    public double getRating() {
+    public Double getRating() {
         return rating;
     }
 

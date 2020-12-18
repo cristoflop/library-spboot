@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 public interface CommentRepository extends CrudRepository<Comment, Long> {
 
     @Query("SELECT AVG(c.rating) from Comment c where c.book = ?1")
-    double getRatingAverageOf(Book book);
+    Double getRatingAverageOf(Book book);
 
     Stream<Comment> findAllByBook(Book book);
 
